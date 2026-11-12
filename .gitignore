@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+venv/
+env/
+
+# Uploads / snapshots
+uploads/
+
+# Model weights (large files — store separately or use Git LFS)
+models/*.pt
+models/*.pth
+
+# Logs
+*.log
+flask_output.log
+
+# IDE
+.vscode/
+.idea/

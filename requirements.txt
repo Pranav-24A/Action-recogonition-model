@@ -1,0 +1,150 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# ShieldVision Pro — Full Requirements
+# Python 3.10+
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# ── INSTALLATION ──────────────────────────────────────────────────────────────
+#
+#   CPU (any machine, no GPU needed):
+#       pip install -r requirements.txt
+#
+#   GPU (NVIDIA CUDA 12.4 — RTX 30xx/40xx, compute 7.0+):
+#       See "GPU INSTALL COMMANDS" section at the bottom of this file.
+#
+# ══════════════════════════════════════════════════════════════════════════════
+
+
+# ── Web Framework ─────────────────────────────────────────────────────────────
+flask==3.1.2
+flask-sqlalchemy==3.1.1
+flask-limiter==4.1.1
+flask-cors==6.0.2
+werkzeug==3.1.5
+itsdangerous==2.2.0
+jinja2==3.1.6
+click==8.3.1
+blinker==1.9.0
+
+# ── Database ──────────────────────────────────────────────────────────────────
+sqlalchemy==2.0.49
+psycopg2==2.9.11
+greenlet==3.3.2
+
+# ── Authentication ────────────────────────────────────────────────────────────
+PyJWT==2.12.1
+
+# ── AI / Computer Vision ──────────────────────────────────────────────────────
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124
+torchaudio==2.6.0+cu124
+ultralytics==8.3.239
+ultralytics-thop==2.0.18
+
+# ── Vision / Numerics ─────────────────────────────────────────────────────────
+opencv-python==4.12.0.88
+opencv-contrib-python==4.13.0.92
+numpy==2.2.6
+pillow==12.0.0
+scipy==1.15.3
+matplotlib==3.10.8
+pandas==2.3.3
+scikit-learn==1.7.2
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+requests==2.32.5
+yt-dlp==2026.3.17
+tqdm==4.67.1
+pyyaml==6.0.3
+psutil==7.1.3
+python-dotenv==1.2.2
+packaging==25.0
+filelock==3.20.1
+sympy==1.13.1
+networkx==3.4.2
+fsspec==2025.12.0
+colorama==0.4.6
+six==1.17.0
+python-dateutil==2.9.0.post0
+pytz==2025.2
+tzdata==2025.3
+pyparsing==3.2.5
+cycler==0.12.1
+kiwisolver==1.4.9
+fonttools==4.61.1
+contourpy==1.3.2
+certifi==2025.11.12
+charset-normalizer==3.4.4
+idna==3.11
+urllib3==2.6.2
+wrapt==2.1.2
+Deprecated==1.3.1
+ordered-set==4.1.0
+limits==5.8.0
+markupsafe==3.0.3
+typing_extensions==4.15.0
+polars==1.36.1
+joblib==1.5.3
+threadpoolctl==3.6.0
+tqdm==4.67.1
+pyyaml==6.0.3
+psutil==7.2.2
+py-cpuinfo==9.0.0
+python-dotenv==1.2.2
+packaging==25.0
+filelock==3.20.0
+sympy==1.14.0
+networkx==3.4.2
+fsspec==2025.10.0
+colorama==0.4.6
+six==1.17.0
+python-dateutil==2.9.0.post0
+pytz==2026.1.post1
+tzdata==2025.3
+pyparsing==3.3.2
+cycler==0.12.1
+kiwisolver==1.5.0
+fonttools==4.62.1
+contourpy==1.3.2
+certifi==2025.10.5
+charset-normalizer==3.4.7
+idna==3.11
+urllib3==2.5.0
+wrapt==2.1.2
+Deprecated==1.3.1
+ordered-set==4.1.0
+limits==5.8.0
+markupsafe==3.0.3
+typing_extensions==4.15.0
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GPU INSTALL COMMANDS
+# Run these IN ORDER after installing the CPU requirements above.
+# Tested on: NVIDIA RTX 3050 Laptop, CUDA 12.4, Driver 551.61, Windows 10/11
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# STEP 1 — Replace CPU torch with CUDA 12.4 build (no-deps prevents
+#          torch from being overwritten back to CPU by other packages):
+#
+#   pip install torch==2.4.0+cu124 torchvision==0.19.0+cu124 \
+#       --index-url https://download.pytorch.org/whl/cu124 \
+#       --force-reinstall --no-deps
+#
+# STEP 2 — Install ultralytics without deps (prevents it pulling CPU torch):
+#
+#   pip install ultralytics==8.3.0 --no-deps
+#
+# STEP 3 — Verify GPU is detected:
+#
+#   python -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+#   # Expected: 2.4.0+cu124  True  NVIDIA GeForce RTX 3050 Laptop GPU
+#
+# ── Notes ─────────────────────────────────────────────────────────────────────
+#   - numpy must stay < 2.0 for torch 2.4.0 ABI compatibility
+#   - ultralytics 8.3.0 excludes torch==2.4.0 on win32 in its metadata,
+#     but it works correctly — use --no-deps to bypass the resolver
+#   - YOLO inference runs in FP32 on GPU (half=False) due to a known
+#     torch 2.4.0 Windows BatchNorm FP16 bug (ultralytics issue #15049)
+#   - BiLSTM violence model and MobileNetV2 run in FP16 on GPU (no bug)
+#   - For CUDA 11.8 machines replace cu124 with cu118 in the URLs above
+# ══════════════════════════════════════════════════════════════════════════════
